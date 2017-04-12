@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+  ProxyRequests     off
+  ProxyPreserveHost on
+  
+   <Directory "/equipaments">
+                DirectoryIndex index.html
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride None
+                Allow from all
+   </Directory>
+		
+  ProxyPass /equipaments/AppJava/ ajp://localhost:8009/equipaments/AppJava/
+  ProxyPassReverse /equipaments/AppJava/ ajp://localhost:8009/equipaments/AppJava/
+
+</VirtualHost>
+

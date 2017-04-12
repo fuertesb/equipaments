@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<WatchedResource>WEB-INF/web.xml</WatchedResource>
+	<Resource 
+        name="jdbc/DataSource"
+        type="javax.sql.DataSource"
+        factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+        driverClassName="%DB_DRIVER%"
+		auth="Container" 
+		username="%DB_USER%"
+		password="%DB_PASS%"
+		url="%DB_CONNECTION_STRING%"
+		defaultAutoCommit="false"
+        maxActive="5" 
+		maxIdle="1" 
+		maxWait="-1"
+	/>
+</Context>
+
