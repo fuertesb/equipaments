@@ -1,8 +1,12 @@
 package cat.gencat.equipaments.endpoints;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,6 +83,36 @@ public class EquipamentServiceController {
 	public void deleteEquipament(@PathVariable("id") Long equipamentId)
 			throws Exception {
 		equipamentService.deleteEquipament(equipamentId);
+	}
+
+	@RequestMapping(value="/dockerId", method = RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String,String> getDockerId(final HttpServletRequest request) {
+		final Exception _ex;
+
+		try {
+//			return new StringBuilder()
+//						.append("Host: ")
+//						.append(request.getServerName())
+//						.append(", HostIP: ")
+//						.append(InetAddress.getLocalHost().getHostName())
+//						.append(", ClientIP: ")
+//						.append(request.getRemoteAddr() )
+//						.toString();
+			return new HashMap<String,String>() {{
+				put("serverName",request.getServerName());
+				put("remoteAddr",request.getRemoteAddr());
+				put("host",InetAddress.getLocalHost().getHostName());
+			}};
+
+		} catch (UnknownHostException e) {
+
+			_ex = e;
+		}
+
+		return new HashMap<String,String>() {{
+			put("error",_ex.toString());
+		}};
 	}
 
 }

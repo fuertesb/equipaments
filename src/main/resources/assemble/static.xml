@@ -11,8 +11,14 @@
       <includes>
       	<include>**/*.html</include>
       	<include>**/*.htm</include>
+		<include>**/*.js</include>
+		<include>**/*.gif</include>
+		<include>**/*.png</include>
+		<include>**/*.txt</include>
       	<include>css/**/*</include>
-      	<include>images/**/*</include>
+      	<include>img/**/*</include>
+		<include>js/**/*</include>
+		<include>lib/**/*</include>
       	<include>scripts/**/*</include>
       </includes>
     </fileSet>

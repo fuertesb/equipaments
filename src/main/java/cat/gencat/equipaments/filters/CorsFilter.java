@@ -19,10 +19,10 @@ public class CorsFilter implements Filter {
 	/**
 	 * This method is invoked by the web container to initialise the filter at
 	 * startup.
-	 * 
+	 *
 	 * @param filterConfig
 	 *            The servlet filter configuration. Must not be {@code null}.
-	 * 
+	 *
 	 * @throws ServletException
 	 *             On a filter initialisation exception.
 	 */
@@ -31,14 +31,14 @@ public class CorsFilter implements Filter {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param request
 	 *            The servlet request.
 	 * @param response
 	 *            The servlet response.
 	 * @param chain
 	 *            The servlet filter chain.
-	 * 
+	 *
 	 * @throws IOException
 	 *             On a I/O exception.
 	 * @throws ServletException
@@ -48,8 +48,8 @@ public class CorsFilter implements Filter {
 			final HttpServletResponse response, final FilterChain chain)
 			throws IOException, ServletException {
 
-		response.addHeader("Access-Control-Allow-Origin", "http://demos.canigo.ctti.gencat.cat");	
-		response.addHeader("Access-Control-Allow-Headers",	
+		response.addHeader("Access-Control-Allow-Origin", "*");
+		response.addHeader("Access-Control-Allow-Headers",
 				"origin, content-type, accept, authorization");
 		response.addHeader("Access-Control-Allow-Credentials", "true");
 		response.addHeader("Access-Control-Allow-Methods",
@@ -63,14 +63,14 @@ public class CorsFilter implements Filter {
 	 * Called by the servlet container each time a request / response pair is
 	 * passed through the chain due to a client request for a resource at the
 	 * end of the chain.
-	 * 
+	 *
 	 * @param request
 	 *            The servlet request.
 	 * @param response
 	 *            The servlet response.
 	 * @param chain
 	 *            The servlet filter chain.
-	 * 
+	 *
 	 * @throws IOException
 	 *             On a I/O exception.
 	 * @throws ServletException
@@ -99,5 +99,5 @@ public class CorsFilter implements Filter {
 	public void destroy() {
 		// do nothing
 	}
-	
+
 }
