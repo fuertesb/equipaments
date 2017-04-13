@@ -50,8 +50,13 @@ node ('master') {
 	
 	stage ('Deploy Artifact') {
   
-		  
-
+		echo "Already deployed..."
+	
+	
+/**
+  * Hack: I've ln -s  /var/lib/docker/jenkins/workspace /var/jenkins_home, so slave (myself) is going to attack the very same workspace
+  * No need to copy anything
+  
 		echo "workspace=${workspace}"
 
 		sh 'cd ${workspace}'
@@ -74,12 +79,12 @@ node ('master') {
 		// copy artifacts
 		sh "find . -name \"*.war\" -exec scp ${SSH_OPT} {} ${project.swarmMaster}:${workspace}/target \\;"
 		sh "find . -name \"*.zip\" -exec scp ${SSH_OPT} {} ${project.swarmMaster}:${workspace}/target \\;"
-		
+		*/
 	}	
  
 }
 
-node('lsltsat3.8798.1286.ecs.hp.com') {
+node('lsltsat2.8798.1286.ecs.hp.com') {
 	
 	def project = new Project(this,inputVariables.environment);
 	def mailer = new Mailer(this);
@@ -89,7 +94,7 @@ node('lsltsat3.8798.1286.ecs.hp.com') {
 
 	stage ('Push Docker') {
 	
-		echo 'Slave starting'
+		echo 'Myself starting'
 	
 		// debug
 		sh 'pwd'
@@ -100,11 +105,11 @@ node('lsltsat3.8798.1286.ecs.hp.com') {
 																			  
 		sh project.buildService();
 		sh project.pushService();
-  
+
+/*		
 		sh "rm -f Dockerfile"
-												
-												
 		sh "rm -rf target"
+*/		
 	}
 	
 	stage ('Service Deploy') {
