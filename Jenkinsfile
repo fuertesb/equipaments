@@ -50,12 +50,6 @@ node ('master') {
 	
 	stage ('Deploy Artifact') {
   
-		echo "Already deployed..."
-	
-	
-/**
-  * Hack: I've ln -s  /var/lib/docker/jenkins/workspace /var/jenkins_home, so slave (myself) is going to attack the very same workspace
-  * No need to copy anything
   
 		echo "workspace=${workspace}"
 
@@ -79,7 +73,6 @@ node ('master') {
 		// copy artifacts
 		sh "find . -name \"*.war\" -exec scp ${SSH_OPT} {} ${project.swarmMaster}:${workspace}/target \\;"
 		sh "find . -name \"*.zip\" -exec scp ${SSH_OPT} {} ${project.swarmMaster}:${workspace}/target \\;"
-		*/
 	}	
  
 }
