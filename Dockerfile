@@ -1,4 +1,4 @@
-FROM registry.swarme.net:5000/alpine-tomcat7-apache
+FROM registry.swarmme.cpd1.intranet.gencat.cat:5000/alpine-tomcat7-apache
 
 MAINTAINER bfuertes <benjami.fuertes@hpe.com>
 
