@@ -50,7 +50,8 @@ node ('master') {
 	
 	stage ('Deploy Artifact') {
   
-  
+	// usermod -aG docker oracle FITF
+	
 		echo "workspace=${workspace}"
 
 		sh 'cd ${workspace}'
