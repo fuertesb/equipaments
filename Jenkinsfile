@@ -65,6 +65,7 @@ node ('master') {
 		// copy enviroment
 		sh "scp ${SSH_OPT} ./app.properties ${project.swarmMaster}:${workspace}/app.properties"
 		sh "scp ${SSH_OPT} ./env.properties ${project.swarmMaster}:${workspace}/env.properties"
+		sh "scp ${SSH_OPT} ./index.html ${project.swarmMaster}:${workspace}/index.html"
 		
 		// copy docker files
 		sh "scp -rp ${SSH_OPT} ./docker ${project.swarmMaster}:${workspace}"
