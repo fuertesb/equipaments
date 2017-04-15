@@ -12,7 +12,7 @@ ENV DB_PASS canigo2015
 ENV DB_CONNECTION_STRING jdbc:mysql://30.34.129.32:3306/equipaments
 ENV DB_DRIVER com.mysql.jdbc.Driver
 
-ENV CATALINA_OPTS '-Dentorn=docker'
+ENV CATALINA_OPTS '-Dentorn=docker '
 
 # Afegim war i statics.
 # TODO: get names from env var
