@@ -333,7 +333,7 @@ class Project implements Serializable {
 	void createQaService() {
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-"+version+" --network "+environment+"_"+serviceName+" --network "+environment;
 		String labels=" --label com.df.distribute=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+".qa."+serviceDomain;
-		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
+		String volum=" --mount type=volume,source=app-qa-"+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
 		String resourceLimits="--limit-memory 1Gb --limit-cpu 1.0";
 		String constraint="node.labels.entorn=="+environment;
 		String constraints=" --constraint=\'${constraint}\'";
@@ -349,7 +349,7 @@ class Project implements Serializable {
 		echo "entro a publicar servei";
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-app --network "+environment+"_"+serviceName+" --network "+environment;
 		String labels=" --label com.df.distribute=true --label com.df.notify=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+"."+serviceDomain;
-		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-app,destination="+logsPath;;
+		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+",destination="+logsPath;;
 		String resourceLimits="--limit-memory 2Gb --limit-cpu 2.0";
 		String constraint="node.labels.entorn=="+environment;
 		String constraints=" --constraint=\'${constraint}\'";
