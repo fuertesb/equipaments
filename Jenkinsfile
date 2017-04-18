@@ -337,9 +337,13 @@ class Project implements Serializable {
 		
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-"+version+" --network "+environment+"_"+serviceName+" --network "+environment;
 		
-		String labels=" --label com.df.distribute=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+".qa."+serviceDomain;
+		String labels=" --label com.df.distribute=true" +
+					  " --label com.df.port=" + servicePort +
+					  " --label com.df.servicePath=" + servicePath +
+					  " --label com.df.serviceDomain=" + serviceName + ".qa." + serviceDomain;
 		
-		labels+="--label com.docker.stack.namespace=SwmDemo --container-label com.docker.stack.namespace=SwmDemo ";
+		labels+=" --label com.docker.stack.namespace=SwmDemo " +
+				" --container-label com.docker.stack.namespace=SwmDemo ";
 		
 		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
 		
@@ -366,11 +370,16 @@ class Project implements Serializable {
 		
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-app --network "+environment+"_"+serviceName+" --network "+environment;
 
-		String labels=" --label com.df.distribute=true --label com.df.notify=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+"."+serviceDomain;
+		String labels=" --label com.df.distribute=true " +
+					  " --label com.df.notify=true " +
+					  " --label com.df.port="+servicePort + 
+					  " --label com.df.servicePath=" + servicePath + 
+					  " --label com.df.serviceDomain=" + serviceName + "." + serviceDomain;
 
-		labels+="--label com.docker.stack.namespace=SwmDemo --container-label com.docker.stack.namespace=SwmDemo ";
+		labels+=" --label com.docker.stack.namespace=SwmDemo " +
+				" --container-label com.docker.stack.namespace=SwmDemo ";
 		
-		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-app,destination="+logsPath;;
+		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-app,destination="+logsPath;
 		String resourceLimits="--limit-memory 2Gb --limit-cpu 2.0";
 
 		String constraint="node.labels.entorn=="+environment;
