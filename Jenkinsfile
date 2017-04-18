@@ -331,33 +331,61 @@ class Project implements Serializable {
 	}
 	
 	void createQaService() {
+		echo "--> createQaService";
+	
+		// FIXME: Use methods to get service names; i.e: getQAName(), getRealServiceName()
+		
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-"+version+" --network "+environment+"_"+serviceName+" --network "+environment;
+		
 		String labels=" --label com.df.distribute=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+".qa."+serviceDomain;
-		String volum=" --mount type=volume,source=app-qa-"+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
+		
+		labels+="--label com.docker.stack.namespace=SwmDemo --container-label com.docker.stack.namespace=SwmDemo ";
+		
+		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
+		
 		String resourceLimits="--limit-memory 1Gb --limit-cpu 1.0";
+		
 		String constraint="node.labels.entorn=="+environment;
 		String constraints=" --constraint=\'${constraint}\'";
+		
 		createScriptService=createScriptService+" "+setEnvironmentVars();
 		createScriptService=createScriptService+" "+labels+" "+constraints+" "+resourceLimits+" "+volum+" --with-registry-auth "+registryURL+"/"+imageName+":"+version;
-		createScriptService=createScriptService+" "+labels+" "+constraints+" "+resourceLimits+" "+volum+" --with-registry-auth "+registryURL+"/"+imageName+":"+version;
-		createScriptService=createScriptService+" "+labels+" "+constraints+" "+resourceLimits+" "+volum+" --with-registry-auth "+registryURL+"/"+imageName+":"+version;
+		
 		this.logger.info createScriptService;
+		
+		echo "<-- createQaService";
+		
 		return createScriptService;
+
 	}
 	
 	void createPublicService() {
-		echo "entro a publicar servei";
+		echo "--> createPublicService";
+
+		// FIXME: Use methods to get service names; i.e: getQAName(), getRealServiceName()
+		
 		String createScriptService="docker service create --name "+environment+"-"+serviceName+"-app --network "+environment+"_"+serviceName+" --network "+environment;
+
 		String labels=" --label com.df.distribute=true --label com.df.notify=true --label com.df.port="+servicePort+" --label com.df.servicePath="+servicePath+" --label com.df.serviceDomain="+serviceName+"."+serviceDomain;
-		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+",destination="+logsPath;;
+
+		labels+="--label com.docker.stack.namespace=SwmDemo --container-label com.docker.stack.namespace=SwmDemo ";
+		
+		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-app,destination="+logsPath;;
 		String resourceLimits="--limit-memory 2Gb --limit-cpu 2.0";
+
 		String constraint="node.labels.entorn=="+environment;
 		String constraints=" --constraint=\'${constraint}\'";
-		 createScriptService=createScriptService+" "+setEnvironmentVars();
-		 createScriptService=createScriptService+" "+labels+constraints+" "+resourceLimits+" "+volum+" --with-registry-auth "+registryURL+"/"+imageName+":"+version;
+
+		createScriptService=createScriptService+" "+setEnvironmentVars();
+		createScriptService=createScriptService+" "+labels+" "+constraints+" "+resourceLimits+" "+volum+" --with-registry-auth "+registryURL+"/"+imageName+":"+version;
+		
 		this.logger.info createScriptService;
+		
+		echo "<-- createPublicService";
+		
 		return createScriptService;
 	}
+	
 	
 	void updateQaService() {
 		String updateScriptService="docker service update --label-add com.df.notify=true "+environment+"-"+serviceName+"-"+version;
