@@ -79,7 +79,7 @@ node ('master') {
  
 }
 
-node('lsltsat2.8798.1286.ecs.hp.com') {
+node('lsltsat3.8798.1286.ecs.hp.com') {
 	
 	def project = new Project(this,inputVariables.environment);
 	def mailer = new Mailer(this);
