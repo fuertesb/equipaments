@@ -345,7 +345,7 @@ class Project implements Serializable {
 		labels+=" --label com.docker.stack.namespace=SwmDemo " +
 				" --container-label com.docker.stack.namespace=SwmDemo ";
 		
-		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
+		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
 		
 		String resourceLimits="--limit-memory 1Gb --limit-cpu 1.0";
 		
@@ -379,7 +379,7 @@ class Project implements Serializable {
 		labels+=" --label com.docker.stack.namespace=SwmDemo " +
 				" --container-label com.docker.stack.namespace=SwmDemo ";
 		
-		String volum=" --mount type=volume,source="+environment+"-"+serviceName+"-app,destination="+logsPath;
+		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+"-app,destination="+logsPath;
 		String resourceLimits="--limit-memory 2Gb --limit-cpu 2.0";
 
 		String constraint="node.labels.entorn=="+environment;
