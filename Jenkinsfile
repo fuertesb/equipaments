@@ -193,6 +193,7 @@ class Project implements Serializable {
 	String jdkTool;
 	String serviceName;
 	String serviceDomain;
+	String ambit;
 	String servicePath;
 	String servicePort;
 	String emailRecipients;
@@ -219,7 +220,7 @@ class Project implements Serializable {
 	}
 	
 	void loadAppProperties() {
-		 def defaultValues = [
+		def defaultValues = [
 		artifactName: '', 
 		imageName: '', 
 		registryURL: '', 
@@ -229,47 +230,45 @@ class Project implements Serializable {
 		jdkTool: '', 
 		serviceName: '', 
 		serviceDomain: '', 
+		ambit: '',
 		servicePath: '', 
-		servicePort: '8080', 
+		servicePort: '', 
 		emailRecipients: 'email@example.com', 
 		logsPath: '/logs']
-		 
-	   
-		 pipeline.sh 'hostname'
-  
-		 pipeline.sh 'pwd'
-		 
-		 pipeline.sh 'ls -la'
-	 
-  
-		 properties = pipeline.readProperties defaults: defaultValues, file: 'app.properties', text: ''
-		   
-			
-		 artifactName = properties['artifactName'];
-		 imageName = properties['imageName'];
-		 registryURL = properties['registryURL'];
-		 swarmMaster = properties['swarmMaster'];
-		 version = properties['version'];
-		 mavenTool = properties['mavenTool'];
-		 jdkTool = properties['jdkTool'];
-		 serviceName = properties['serviceName'];
-		 serviceDomain = properties['serviceDomain'];
-		 servicePath = properties['servicePath'];
-		 servicePort = properties['servicePort'];
+
+		// debug
+		pipeline.sh 'hostname'
+		pipeline.sh 'pwd'
+		pipeline.sh 'ls -la'
+
+		properties = pipeline.readProperties defaults: defaultValues, file: 'app.properties', text: ''
+
+		artifactName = properties['artifactName'];
+		imageName = properties['imageName'];
+		registryURL = properties['registryURL'];
+		swarmMaster = properties['swarmMaster'];
+		version = properties['version'];
+		mavenTool = properties['mavenTool'];
+		jdkTool = properties['jdkTool'];
+		serviceName = properties['serviceName'];
+		serviceDomain = properties['serviceDomain'];
+		servicePath = properties['servicePath'];
+		servicePort = properties['servicePort'];
 		emailRecipients = properties['emailRecipients'];
 		logsPath =  properties['logsPath'];
-										   
-		 this.logger.info 'artifactName='+artifactName;
-		 this.logger.info 'imageName='+imageName;
-		 this.logger.info 'registryURL='+registryURL;
-		 this.logger.info 'swarmMaster='+swarmMaster;
-		 this.logger.info 'version='+version;
-		 this.logger.info 'jdkTool='+jdkTool;
-										   
-		 this.logger.info 'serviceName='+serviceName;
-		 this.logger.info 'serviceDomain='+serviceDomain;
-		 this.logger.info 'servicePath='+servicePath;
-		 this.logger.info 'servicePort='+servicePort;
+								   
+		this.logger.info 'artifactName='+artifactName;
+		this.logger.info 'imageName='+imageName;
+		this.logger.info 'registryURL='+registryURL;
+		this.logger.info 'swarmMaster='+swarmMaster;
+		this.logger.info 'version='+version;
+		this.logger.info 'jdkTool='+jdkTool;
+								   
+		this.logger.info 'serviceName='+serviceName;
+		this.logger.info 'serviceDomain='+serviceDomain;
+		this.logger.info 'Ambit='+ambit;
+		this.logger.info 'servicePath='+servicePath;
+		this.logger.info 'servicePort='+servicePort;
 		this.logger.info 'emailRecipients='+emailRecipients;
 		this.logger.info 'logsPath='+logsPath;
 	}
@@ -341,9 +340,12 @@ class Project implements Serializable {
 					  " --label com.df.port=" + servicePort +
 					  " --label com.df.servicePath=" + servicePath +
 					  " --label com.df.serviceDomain=" + serviceName + ".qa." + serviceDomain;
-		
+					  
 		labels+=" --label com.docker.stack.namespace=SwmDemo " +
 				" --container-label com.docker.stack.namespace=SwmDemo ";
+		
+		labels+=" --label net.swarmme.ambit=" + ambit +
+				" --container-label net.swarmme.ambit=" + ambit;
 		
 		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+"-"+version+",destination="+logsPath;
 		
@@ -378,6 +380,9 @@ class Project implements Serializable {
 
 		labels+=" --label com.docker.stack.namespace=SwmDemo " +
 				" --container-label com.docker.stack.namespace=SwmDemo ";
+					
+		labels+=" --label net.swarmme.ambit=" + ambit +
+				" --container-label net.swarmme.ambit=" + ambit;						
 		
 		String volum=" --mount type=volume,source=app-"+environment+"-"+serviceName+"-app,destination="+logsPath;
 		String resourceLimits="--limit-memory 2Gb --limit-cpu 2.0";
