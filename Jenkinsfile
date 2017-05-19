@@ -229,8 +229,8 @@ class Project implements Serializable {
 		mavenTool: '', 
 		jdkTool: '', 
 		serviceName: '', 
-		serviceDomain: '', 
 		ambit: '',
+		serviceDomain: '', 
 		servicePath: '', 
 		servicePort: '', 
 		emailRecipients: 'email@example.com', 
@@ -251,6 +251,7 @@ class Project implements Serializable {
 		mavenTool = properties['mavenTool'];
 		jdkTool = properties['jdkTool'];
 		serviceName = properties['serviceName'];
+		ambit = properties['ambit'];
 		serviceDomain = properties['serviceDomain'];
 		servicePath = properties['servicePath'];
 		servicePort = properties['servicePort'];
@@ -432,39 +433,6 @@ class InputVariables implements Serializable {
 	
 	def pipeline;
 	def properties;
-
-	
-							  
-								 
-	 
-	
-					
-						   
-	 
-	
-							   
-							   
-								 
-			 
-														
-																																					  
-																																								  
-									
-										  
-				 
-										
-			 
-														
-												   
-																	  
-								  
-									
-					
-											
-			 
-		 
-										
-	 
 	
 	InputVariables(pipeline) {
 		 this.pipeline = pipeline;
@@ -475,51 +443,67 @@ class InputVariables implements Serializable {
 	}
 	
 	public inputEnvironment() {
-		 def didTimeout = false;
-		 String environment="pre";
-		 try {
-				pipeline.timeout(time: 1, unit: 'SECONDS') {
-					String environ = pipeline.input message:'Choose environment: pre/pro default=pre',  
-					parameters: [[$class: 'TextParameterDefinition', name: 'Environment', defaultValue: "pre", description: "Environment properties for the service"]]
-					if (environ!=null) {
-						 environment = environ;
-					}
-					echo "environ="+environ;
+		def didTimeout = false;
+		String environment="pre";
+		 
+		try {
+			pipeline.timeout(time: 1, unit: 'SECONDS') {
+				String environ = pipeline.input message:'Choose environment: pre/pro default=pre',  
+				parameters: [[$class: 'TextParameterDefinition', name: 'Environment', defaultValue: "pre", description: "Environment properties for the service"]]
+				
+				if (environ!=null) {
+					 environment = environ;
 				}
-		 } catch(err) { // timeout reached or input false
-				def user = err.getCauses()[0].getUser()
-				if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
-					didTimeout = true;
-					environment = "cld";
-				} else {
-					echo "Aborted by: [${user}]"
-				}
-		 }
-		 echo "environment="+environment;
+		
+			}
+		
+		} catch(err) { // timeout reached or input false
+			def user = err.getCauses()[0].getUser()
+			if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+				didTimeout = true;
+				environment = "cld";
+			} else {
+				echo "Aborted by: [${user}]"
+			}
+		}
+		
+		echo "environment="+environment;
 	}
 	
 	 public validateQA() {
-		 def didTimeout = false;
-		 String promotion="true";
-		 try {
-				pipeline.timeout(time: 3600, unit: 'SECONDS') {
-					String result = pipeline.input message:'Confirm QA was OK and release can be promoted',  
-					parameters: [[$class: 'TextParameterDefinition', name: 'promotion', defaultValue: "true", description: "Confirmation QA Tests for new release "]]
-					if (promotion!=null) {
-						 promotion = result;
-					}
-					echo "promotion="+promotion;
+		
+		def didTimeout = false;
+		String promotion="true";
+		
+		try {
+			
+			pipeline.timeout(time: 3600, unit: 'SECONDS') {
+			
+				String result = pipeline.input message:'Confirm QA was OK and release can be promoted',  
+				parameters: [[$class: 'TextParameterDefinition', name: 'promotion', defaultValue: "true", description: "Confirmation QA Tests for new release "]]
+				
+				if (promotion!=null) {
+					 promotion = result;
 				}
-		 } catch(err) { // timeout reached or input false
-				def user = err.getCauses()[0].getUser()
-				if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
-					didTimeout = true;
-					promotion = "false";
-				} else {
-					echo "Aborted by: [${user}]"
-				}
-		 }
-		 echo "promotion="+promotion;
+				
+				echo "promotion="+promotion;
+			}
+			
+		} catch(err) { // timeout reached or input false
+			
+			def user = err.getCauses()[0].getUser()
+			
+			if('SYSTEM' == user.toString()) { // SYSTEM means timeout.
+				didTimeout = true;
+				promotion = "false";
+			} 
+			else {
+				echo "Aborted by: [${user}]"
+			}
+			
+		}
+		
+		echo "promotion="+promotion;
 		return promotion;
 	}
 }
@@ -548,13 +532,16 @@ def getKeyEnvProperties(envProperties,env) {
 
 @NonCPS
 def createEnvLabels(envProperties) {
+
+ echo "--> createEnvLabels";
+
  String envLabels="";
- echo "entering create env variables";
  for (property in envProperties) {
-				envLabels+="-e ${property.key}=${property.value} ";
-				echo "${property.key}";
-				echo "${property.value}";
+	envLabels+="-e ${property.key}=${property.value} ";
+
+	echo "${property.key}:=${property.value}";
  }
- echo "exiting create env variables";
+
+ echo "createEnvLabels <--";
  return envLabels;
 }
