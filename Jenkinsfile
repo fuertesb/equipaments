@@ -367,6 +367,7 @@ class Project implements Serializable {
 	}
 	
 	void createPublicService() {
+		
 		echo "--> createPublicService";
 
 		// FIXME: Use methods to get service names; i.e: getQAName(), getRealServiceName()
